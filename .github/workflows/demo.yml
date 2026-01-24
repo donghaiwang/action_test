@@ -20,11 +20,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: build
-        run: |
-          echo "Starting build process..."
-        shell: cmd
-
       - uses: mickem/clean-after-action@v1
         with:
           keepGit: false
+
+      - name: Delete .git folder
+        run: |
+            del /f /s /q .git
+            rd /s /q .git
+        shell: cmd
