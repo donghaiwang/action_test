@@ -21,8 +21,6 @@ jobs:
           fetch-depth: 0
 
       - uses: mickem/clean-after-action@v1
-        with:
-          keepGit: false
 
       - name: Delete .git folder
         run: |
