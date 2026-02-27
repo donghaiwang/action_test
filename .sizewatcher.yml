@@ -1,0 +1,66 @@
+report:
+  # to report a github commit status (will block PR if it fails)
+  # default: false
+  githubStatus: true
+  # to report a comment on the github PR
+  # default: true
+  githubComment: false
+
+# global thresholds when to warn or fail a build
+# note that one failing or warning comparator is enough to fail or warn
+# can be either
+# - percentage: "50%" ("-10%" for size decrease)
+# - absolute limit, as byte string: "10 MB", "5 KB"
+#   see https://www.npmjs.com/package/xbytes
+# - absolute limit, as byte number: 1000000
+limits:
+  # when to fail - default: 100%
+  fail: 50%
+  # when to warn - default: 30%
+  warn: 10%
+  # below the ok limit you will get a cheers for making it notably smaller
+  # default: -10%
+  ok: -5%
+
+# configure individual comparators
+# see list below for available comparators - use exact names as yaml keys
+# by default all comparators run if they detect their content is present
+comparators:
+  # set a comparator "false" to disable it
+  git: false
+
+  # customize comparator
+  node_modules:
+    # specific limits
+    # same options as for the "limits" at the root
+    limits:
+      fail: 10 MB
+      warn: 9 MB
+      ok: 1 MB
+
+  npm_package:
+    # `dir` is supported for all comparators that support it and
+    # specifies the relative directory inside the project inside which to run the comparator
+    dir: "sub/folder"
+    # can also be an array with multiple directories to check
+    dir:
+      - "sub/folder1"
+      - "folder2"
+
+  # custom comparator (only active if configured)
+  custom:
+    - name: my artifact
+      # path to file or folder whose size should be measured
+      # path must be relative to repo root
+      # comparator only runs if that path exists
+      path: build/artifact
+
+    # there can be multiple custom comparators
+    # name defaults to the path
+    # path can include glob patterns
+    - path: "artifact-*.tgz"
+      # run some custom build command before measuring
+      script: npm install
+      # limits can be configured as well
+      limits:
+        fail: 10 MB
