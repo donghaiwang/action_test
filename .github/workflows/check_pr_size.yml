@@ -2,6 +2,11 @@ name: labeler
 
 on: [pull_request]
 
+# Permission can be added at job level or workflow level
+permissions:
+  contents: write   # This is required to create/push the new git tag
+
+
 jobs:
   labeler:
     runs-on: ubuntu-latest
